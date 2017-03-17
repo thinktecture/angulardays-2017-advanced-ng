@@ -1,0 +1,13 @@
+header {
+  background: linear-gradient(to top, #1e3c72 , #2a5298);
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  cursor: all-scroll;
+}
+
+section {
+  background-color: white;
+  flex: 1;
+  padding: 10px;
+}
