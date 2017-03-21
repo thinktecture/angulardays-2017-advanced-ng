@@ -1,4 +1,4 @@
-import {Component, OnInit, HostBinding, Input, ElementRef, NgZone, Renderer} from '@angular/core';
+import {Component, OnInit, HostBinding, Input, ElementRef, NgZone, Renderer2} from '@angular/core';
 
 let zIndex: number = 0;
 let id: number = 0;
@@ -50,11 +50,11 @@ export class BoxComponent implements OnInit {
   }
 
   public updateStyles() {
-    this._renderer.setElementStyle(this._elementRef.nativeElement, 'left', this.left);
-    this._renderer.setElementStyle(this._elementRef.nativeElement, 'top', this.top);
+    this._renderer.setStyle(this._elementRef.nativeElement, 'left', this.left);
+    this._renderer.setStyle(this._elementRef.nativeElement, 'top', this.top);
   }
 
-  constructor(private _elementRef: ElementRef, private ngZone: NgZone, private _renderer: Renderer) {
+  constructor(private _elementRef: ElementRef, private ngZone: NgZone, private _renderer: Renderer2) {
     this.id = ++id;
     this.zIndex = ++zIndex;
 
