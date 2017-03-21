@@ -1,4 +1,4 @@
-import {Component, OnInit, HostBinding, Input, HostListener, ElementRef, Renderer, NgZone} from '@angular/core';
+import {Component, OnInit, HostBinding, Input, ElementRef, NgZone, Renderer} from '@angular/core';
 
 let zIndex: number = 0;
 let id: number = 0;
@@ -23,24 +23,20 @@ export class BoxComponent implements OnInit {
 
   public id: number;
 
-  @HostBinding('style.left')
   public get left(): string {
     return `${this._left}px`;
   }
 
-  @HostBinding('style.top')
   public get top(): string {
     return `${this._top}px`;
   }
 
-  @HostListener('mousedown', ['$event'])
   public onMouseDown(event: MouseEvent) {
     this._previousLeft = event.clientX;
     this._previousTop = event.clientY;
     this.zIndex = ++zIndex;
   }
 
-  @HostListener('mousemove', ['$event'])
   public onMouseMove(event: MouseEvent) {
     if (event.buttons === 1 && this._previousLeft && this._previousTop) {
       this._left += event.clientX - this._previousLeft;
@@ -48,18 +44,28 @@ export class BoxComponent implements OnInit {
 
       this._top += event.clientY - this._previousTop;
       this._previousTop = event.clientY;
+
+      this.updateStyles();
     }
   }
 
-  constructor(private _elementRef: ElementRef, private _renderer: Renderer, private _ngZone: NgZone) {
+  public updateStyles() {
+    this._renderer.setElementStyle(this._elementRef.nativeElement, 'left', this.left);
+    this._renderer.setElementStyle(this._elementRef.nativeElement, 'top', this.top);
+  }
+
+  constructor(private _elementRef: ElementRef, private ngZone: NgZone, private _renderer: Renderer) {
     this.id = ++id;
     this.zIndex = ++zIndex;
 
-    // TODO: Combine ElementRef and Renderer to replace the decorators for left, top, onMosueDown, onMouseMove above.
-    // TODO: Run the mousedown and mousemove operations outside of the NgZone.
+    ngZone.runOutsideAngular(() => {
+      _renderer.listen(_elementRef.nativeElement, 'mousedown', evt => this.onMouseDown(evt));
+      _renderer.listen(_elementRef.nativeElement, 'mousemove', evt => this.onMouseMove(evt));
+    });
   }
 
   public ngOnInit() {
+    this.updateStyles();
   }
 
 }
