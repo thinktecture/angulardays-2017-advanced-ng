@@ -7,16 +7,21 @@ import {PictureComponent} from './picture/picture.component';
 import {CameraService} from './camera.service';
 import {MobileCameraService} from './mobile-camera.service';
 import {DesktopCameraService} from './desktop-camera.service';
+import {StarwarsComponent} from './starwars/starwars.component';
+import {RouterModule} from '@angular/router';
+import {ROUTES} from './app.routes';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PictureComponent
+    PictureComponent,
+    StarwarsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    RouterModule.forRoot(ROUTES, { useHash: true })
   ],
   providers: [{
     provide: CameraService,
