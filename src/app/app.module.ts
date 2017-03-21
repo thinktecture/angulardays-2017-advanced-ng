@@ -10,12 +10,16 @@ import {DesktopCameraService} from './desktop-camera.service';
 import {StarwarsComponent} from './starwars/starwars.component';
 import {RouterModule} from '@angular/router';
 import {ROUTES} from './app.routes';
+import { ViewComponent } from './view/view.component';
+import { BoxComponent } from './box/box.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PictureComponent,
-    StarwarsComponent
+    StarwarsComponent,
+    ViewComponent,
+    BoxComponent
   ],
   imports: [
     BrowserModule,
