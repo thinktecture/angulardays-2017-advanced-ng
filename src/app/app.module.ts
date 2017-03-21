@@ -1,12 +1,12 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-
-import { AppComponent } from './app.component';
-import { PictureComponent } from './picture/picture.component';
-
-// TODO: Add the camera service base class to the providers and use a factory to create an instance of the concrete camera service.
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
+import {AppComponent} from './app.component';
+import {PictureComponent} from './picture/picture.component';
+import {CameraService} from './camera.service';
+import {MobileCameraService} from './mobile-camera.service';
+import {DesktopCameraService} from './desktop-camera.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,15 @@ import { PictureComponent } from './picture/picture.component';
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [{
+    provide: CameraService,
+    useFactory: CameraServiceFactory
+  }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
+
+export function CameraServiceFactory() {
+  return window['cordova'] ? new MobileCameraService() : new DesktopCameraService();
+}
